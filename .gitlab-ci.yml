@@ -23,6 +23,7 @@ build:go:
     - mkdir -p $GOPATH/src/gitlab/$CI_PROJECT_NAMESPACE
     - ln -sf $CI_PROJECT_DIR $GOPATH/src/gitlab/$CI_PROJECT_NAMESPACE
     - cd $GOPATH/src/gitlab/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+    - go get -u github.com/golang/dep/cmd/dep
 
     - echo "Fetching dependencies..."
     - dep ensure
