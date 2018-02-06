@@ -1,4 +1,4 @@
-image: docker:latest
+image: docker:18.01.0-ce-git
 
 variables:
   DOCKER_DRIVER: overlay
@@ -12,6 +12,7 @@ stages:
 
 build:go:
   stage: build
+  image: golang:1.9.3-stretch
   script:
     - echo "Bulding gorest"
     - CGO_ENABLED=0 GOOS=linux go build -o out/app
@@ -22,6 +23,7 @@ build:go:
 
 deploy:test:
   stage: deploy
+  image: ubuntu:17.10
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
