@@ -7,6 +7,9 @@ variables:
   CONTAINER_NAME: "gorest"
   REPO_NAME: tdlabs/gorest
 
+services:
+  - docker:dind
+
 stages:
   - build
   - deploy
