@@ -1,0 +1,42 @@
+image: docker:latest
+
+variables:
+  DOCKER_DRIVER: overlay
+  INTERNAL_DOCKER_REGISTRY: "gitlab:5000"
+  DOCKER_IMAGE: "gorest"
+  CONTAINER_NAME: "gorest"
+
+stages:
+  - build
+  - deploy
+
+build:go:
+  stage: build
+  script:
+    - echo "Bulding gorest"
+    - CGO_ENABLED=0 GOOS=linux go build -o out/app
+    - docker build -t $INTERNAL_DOCKER_REGISTRY/$DOCKER_IMAGE:$CI_COMMIT_SHA .
+  artifacts:
+    paths:
+      - out/*
+
+deploy:test:
+  stage: deploy
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
+    - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
+  script:
+    - echo "Deploy to TEST environment"
+    - ssh vagrant@test "docker stop $CONTAINER_NAME || true"
+    - ssh vagrant@test "docker rm $CONTAINER_NAME || true"
+    - ssh vagrant@test docker run -d --rm --name $CONTAINER_NAME -p 8090:8080 $INTERNAL_DOCKER_REGISTRY/$CONTAINER_NAME:$CI_COMMIT_SHA
+  environment:
+    name: test
+    url: http://test:8090/
+  dependencies:
+  - build:go
+  only:
+  - master
