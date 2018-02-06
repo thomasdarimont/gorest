@@ -15,8 +15,10 @@ build:go:
   image: golang:1.9.3-stretch
   script:
     - echo "Preparing go env"
-    - export GOPATH=$(pwd)
-
+    - export GOPATH=/builds/gocode
+    - mkdir -p $GOPATH/src/gorest
+    - ln -s /builds/tdlabs/gorest $GOPATH/src/gorest
+    - cd $GOPATH/src/gorest
     - echo "Fetching dependencies..."
     - go get
 
