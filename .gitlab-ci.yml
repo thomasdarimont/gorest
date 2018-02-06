@@ -28,12 +28,13 @@ build:go:
     - ln -sf $CI_PROJECT_DIR $GOPATH/src/gitlab/$CI_PROJECT_NAMESPACE
     - cd $GOPATH/src/gitlab/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
     - go get -u github.com/golang/dep/cmd/dep
+    - go get -u github.com/ahmetb/govvv
 
     - echo "Fetching dependencies..."
     - dep ensure
 
     - echo "Bulding gorest..."
-    - CGO_ENABLED=0 GOOS=linux go build -o out/app
+    - CGO_ENABLED=0 GOOS=linux govvv build -o out/app
   artifacts:
     paths:
       - out/*
