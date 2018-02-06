@@ -5,20 +5,25 @@ variables:
   INTERNAL_DOCKER_REGISTRY: "gitlab:5000"
   DOCKER_IMAGE: "gorest"
   CONTAINER_NAME: "gorest"
+  REPO_NAME: tdlabs/gorest
 
 stages:
   - build
   - deploy
+
+before_script:
+  - echo $CI_BUILD_REF
+  - echo $CI_PROJECT_DIR
 
 build:go:
   stage: build
   image: golang:1.9.3-stretch
   script:
     - echo "Preparing go env"
-    - export GOPATH=/builds/gocode
-    - mkdir -p $GOPATH/src/gorest
-    - ln -s /builds/tdlabs/gorest $GOPATH/src/gorest
-    - cd $GOPATH/src/gorest
+    - mkdir -p $GOPATH/src/$REPO_NAME
+    - mv $CI_PROJECT_DIR/* $GOPATH/src/$REPO_NAME
+    - cd $GOPATH/src/$REPO_NAME
+
     - echo "Fetching dependencies..."
     - go get
 
