@@ -14,9 +14,12 @@ build:go:
   stage: build
   image: golang:1.9.3-stretch
   script:
-    - echo "Bulding gorest"
+    - echo "Fetching dependencies..."
+    - go get
+    - echo "Bulding gorest..."
     - CGO_ENABLED=0 GOOS=linux go build -o out/app
     - docker build -t $INTERNAL_DOCKER_REGISTRY/$DOCKER_IMAGE:$CI_COMMIT_SHA .
+    - ehco "Build complete"
   artifacts:
     paths:
       - out/*
