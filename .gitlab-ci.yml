@@ -43,6 +43,7 @@ package:docker:
   stage: package
   script:
     - docker build -t $INTERNAL_DOCKER_REGISTRY/$DOCKER_IMAGE:$CI_COMMIT_SHA .
+    - docker push $INTERNAL_DOCKER_REGISTRY/$DOCKER_IMAGE:$CI_COMMIT_SHA
     - echo "Build complete"
   dependencies:
     - build:go
