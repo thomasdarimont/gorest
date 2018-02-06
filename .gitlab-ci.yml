@@ -12,6 +12,7 @@ services:
 
 stages:
   - build
+  - package
   - deploy
 
 before_script:
@@ -33,12 +34,18 @@ build:go:
 
     - echo "Bulding gorest..."
     - CGO_ENABLED=0 GOOS=linux go build -o out/app
-    - docker build -t $INTERNAL_DOCKER_REGISTRY/$DOCKER_IMAGE:$CI_COMMIT_SHA .
-    - echo "Build complete"
   artifacts:
     paths:
       - out/*
       - vendor
+
+package:docker:
+  stage: package
+  script:
+    - docker build -t $INTERNAL_DOCKER_REGISTRY/$DOCKER_IMAGE:$CI_COMMIT_SHA .
+    - echo "Build complete"
+  dependencies:
+    - build:go
 
 deploy:test:
   stage: deploy
