@@ -31,6 +31,7 @@ build:go:
     - go get -u github.com/ahmetb/govvv
 
     - echo "Fetching dependencies..."
+    - go get
     - dep ensure
 
     - echo "Bulding gorest..."
