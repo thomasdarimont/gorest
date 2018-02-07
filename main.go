@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"flag"
 	"github.com/gorilla/mux"
-	"./people"
-	"./actuator"
+	"github.com/thomasdarimont/gotraining/gorest/people"
+	"github.com/thomasdarimont/gotraining/gorest/actuator"
 )
 
 func main() {
