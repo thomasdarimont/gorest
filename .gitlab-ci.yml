@@ -30,8 +30,8 @@ build:go:
     - go get -u github.com/golang/dep/cmd/dep
     - go get -u github.com/ahmetb/govvv
 
-    - echo "Fetching dependencies..."
-    - go get
+ #   - echo "Fetching dependencies..."
+#    - go get
 #    - dep ensure
 
     - echo "Bulding gorest..."
