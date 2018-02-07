@@ -32,7 +32,7 @@ build:go:
 
  #   - echo "Fetching dependencies..."
 #    - go get
-#    - dep ensure
+    - dep ensure -vendor-only
 
     - echo "Bulding gorest..."
     - CGO_ENABLED=0 GOOS=linux govvv build -o out/app
