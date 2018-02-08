@@ -9,7 +9,13 @@ import (
 	"github.com/thomasdarimont/gotraining/gorest/actuator"
 )
 
+//provided by govvv at build-time
+var GitCommit, BuildDate string
+
 func main() {
+
+	actuator.GitCommit = GitCommit
+	actuator.BuildDate = BuildDate
 
 	var addr = flag.String("addr", ":8080", "The addr of the application.")
 	flag.Parse()
