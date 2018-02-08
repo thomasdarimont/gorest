@@ -26,9 +26,9 @@ build:go:
   image: golang:1.9.3-stretch
   script:
     - echo "Preparing go env"
-    - mkdir -p $GOPATH/src/github.com/thomasdarimont/gotraining/$CI_PROJECT_NAMESPACE
-    - ln -sf $CI_PROJECT_DIR $GOPATH/src/github.com/thomasdarimont/gotraining/$CI_PROJECT_NAMESPACE
-    - cd $GOPATH/src/github.com/thomasdarimont/gotraining/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+    - mkdir -p $GOPATH/src/github.com/thomasdarimont/gotraining/$CI_PROJECT_NAME
+    - ln -sf $CI_PROJECT_DIR $GOPATH/src/github.com/thomasdarimont/gotraining/$CI_PROJECT_NAME
+    - cd $GOPATH/src/github.com/thomasdarimont/gotraining/$CI_PROJECT_NAME
     - go get -u github.com/golang/dep/cmd/dep
     - go get -u github.com/ahmetb/govvv
 
