@@ -68,7 +68,7 @@ deploy:test:
   only:
   - master
 
-deploy:test:
+deploy:prod:
   stage: deploy
   image: phusion/baseimage:0.10.0
   before_script:
