@@ -22,21 +22,12 @@ build:go:
   stage: build
   image: golang:1.9.3-stretch
   script:
-    - echo "Preparing go env"
+    - echo "preparing go env"
     - mkdir -p $GOPATH/src/github.com/thomasdarimont/gotraining
     - ln -sf $CI_PROJECT_DIR $GOPATH/src/github.com/thomasdarimont/gotraining
     - cd $GOPATH/src/github.com/thomasdarimont/gotraining/$CI_PROJECT_NAME
-    - pwd
-    - ls -aFL
-    - go get -u github.com/golang/dep/cmd/dep
-    - go get -u github.com/ahmetb/govvv
-
-#    - echo "Fetching dependencies..."
-#    - go get
-#    - dep ensure -vendor-only
-
-    - echo "Bulding gorest..."
-    - CGO_ENABLED=0 GOOS=linux govvv build -o out/app
+    - echo "bulding $CI_PROJECT_NAME..."
+    - ./build.sh
   artifacts:
     paths:
       - out/*
@@ -45,9 +36,12 @@ build:go:
 package:docker:
   stage: package
   script:
+    - echo "docker build..."
     - docker build -t $INTERNAL_DOCKER_REGISTRY/$DOCKER_IMAGE:$CI_COMMIT_SHA .
+    - echo "docker build complete"
+    - echo "docker push..."
     - docker push $INTERNAL_DOCKER_REGISTRY/$DOCKER_IMAGE:$CI_COMMIT_SHA
-    - echo "Build complete"
+    - echo "docker image push complete"
   dependencies:
     - build:go
 
