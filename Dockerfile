@@ -1,4 +1,4 @@
-FROM ubuntu:17.10
+FROM phusion/baseimage:0.10.0
 RUN useradd -u 10001 app
 
 FROM scratch

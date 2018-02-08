@@ -1,4 +1,4 @@
-image: docker:18.01.0-ce-git
+image: docker:18.02.0-ce-git
 
 variables:
   DOCKER_DRIVER: overlay
@@ -47,7 +47,7 @@ package:docker:
 
 deploy:test:
   stage: deploy
-  image: ubuntu:17.10
+  image: phusion/baseimage:0.10.0
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
