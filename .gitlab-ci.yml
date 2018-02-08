@@ -26,6 +26,8 @@ build:go:
     - mkdir -p $GOPATH/src/github.com/thomasdarimont/gotraining/$CI_PROJECT_NAME
     - ln -sf $CI_PROJECT_DIR $GOPATH/src/github.com/thomasdarimont/gotraining/$CI_PROJECT_NAME
     - cd $GOPATH/src/github.com/thomasdarimont/gotraining/$CI_PROJECT_NAME
+    - pwd
+    - ls -aFL
     - go get -u github.com/golang/dep/cmd/dep
     - go get -u github.com/ahmetb/govvv
 
