@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 )
 
+//provided by govvv at build-time
 var GitCommit, BuildDate string
 
 type Info struct {

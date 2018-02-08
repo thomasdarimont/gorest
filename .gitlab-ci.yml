@@ -16,7 +16,8 @@ stages:
   - deploy
 
 before_script:
-  - 'echo -e "CI_BUILD_REF: $CI_BUILD_REF\nCI_PROJECT_DIR: $CI_PROJECT_DIR\nCI_PROJECT_NAMESPACE: $CI_PROJECT_NAMESPACE\nCI_PROJECT_NAME: $CI_PROJECT_NAME\n"'
+# see available variables: https://docs.gitlab.com/ce/ci/variables/README.html
+  - 'echo -e "CI_BUILD_REF: $CI_BUILD_REF\nCI_PROJECT_DIR: $CI_PROJECT_DIR\nCI_PROJECT_NAMESPACE: $CI_PROJECT_NAMESPACE\nCI_PROJECT_NAME: $CI_PROJECT_NAME\nCI_PIPELINE_ID: $CI_PIPELINE_ID\n"'
 
 build:go:
   stage: build
@@ -63,6 +64,29 @@ deploy:test:
     name: test
     url: http://test:8090/
   dependencies:
-  - build:go
+  - package:docker
+  only:
+  - master
+
+deploy:test:
+  stage: deploy
+  image: phusion/baseimage:0.10.0
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
+    - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
+  script:
+    - echo "Deploy to PROD environment"
+    - ssh vagrant@test "docker stop $CONTAINER_NAME || true"
+    - ssh vagrant@test "docker rm $CONTAINER_NAME || true"
+    - ssh vagrant@test docker run -d --rm --name $CONTAINER_NAME -p 8090:8080 $INTERNAL_DOCKER_REGISTRY/$CONTAINER_NAME:$CI_COMMIT_SHA
+  environment:
+    name: prod
+    url: http://prod:8090/
+  dependencies:
+  - package:docker
+  when: manual
   only:
   - master

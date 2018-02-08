@@ -8,6 +8,9 @@ echo "ensure dependencies..."
 dep ensure
 
 echo "build binary..."
-CGO_ENABLED=0 GOOS=linux govvv build -o out/app
+export CGO_ENABLED=0
+export GOOS=linux
+
+go build -ldflags="$(govvv -flags -pkg $(go list ./actuator))" -o out/app
 
 echo "done."
