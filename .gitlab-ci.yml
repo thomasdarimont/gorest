@@ -16,8 +16,10 @@ stages:
   - deploy
 
 before_script:
-  - echo $CI_BUILD_REF
-  - echo $CI_PROJECT_DIR
+  - echo CI_BUILD_REF: $CI_BUILD_REF
+  - echo CI_PROJECT_DIR: $CI_PROJECT_DIR
+  - echo CI_PROJECT_NAMESPACE: $CI_PROJECT_NAMESPACE
+  - echo CI_PROJECT_NAME: $CI_PROJECT_NAME
 
 build:go:
   stage: build
@@ -30,9 +32,9 @@ build:go:
     - go get -u github.com/golang/dep/cmd/dep
     - go get -u github.com/ahmetb/govvv
 
- #   - echo "Fetching dependencies..."
+#    - echo "Fetching dependencies..."
 #    - go get
-    - dep ensure -vendor-only
+#    - dep ensure -vendor-only
 
     - echo "Bulding gorest..."
     - CGO_ENABLED=0 GOOS=linux govvv build -o out/app
