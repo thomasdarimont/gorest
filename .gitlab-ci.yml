@@ -16,10 +16,10 @@ stages:
   - deploy
 
 before_script:
-  - echo CI_BUILD_REF: $CI_BUILD_REF
-  - echo CI_PROJECT_DIR: $CI_PROJECT_DIR
-  - echo CI_PROJECT_NAMESPACE: $CI_PROJECT_NAMESPACE
-  - echo CI_PROJECT_NAME: $CI_PROJECT_NAME
+  - "echo CI_BUILD_REF: $CI_BUILD_REF"
+  - "echo CI_PROJECT_DIR: $CI_PROJECT_DIR"
+  - "echo CI_PROJECT_NAMESPACE: $CI_PROJECT_NAMESPACE"
+  - "echo CI_PROJECT_NAME: $CI_PROJECT_NAME"
 
 build:go:
   stage: build
