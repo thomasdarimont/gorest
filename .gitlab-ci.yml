@@ -47,6 +47,7 @@ test:go:
   image: golang:1.9.4
   script:
     - echo "running tests..."
+    - ./build.sh
     - go test ./...
     - echo "tests completed."
   dependencies:
