@@ -14,8 +14,6 @@ func main() {
 	var addr = flag.String("addr", ":8080", "The addr of the application.")
 	flag.Parse()
 
-	people.Init()
-
 	router := mux.NewRouter()
 
 	router.HandleFunc("/people", people.GetPeopleEndpoint).Methods("GET")

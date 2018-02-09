@@ -12,6 +12,7 @@ services:
 
 stages:
   - build
+  - test
   - package
   - deploy
 
@@ -35,6 +36,16 @@ build:go:
       - out/*
       - vendor
 
+test:go:
+  stage: test
+  image: golang:1.9.4
+  script:
+    - echo "running tests..."
+    - go test ./...
+    - echo "tests completed."
+  dependencies:
+    - build:go
+
 package:docker:
   stage: package
   script:
@@ -45,7 +56,7 @@ package:docker:
     - docker push $INTERNAL_DOCKER_REGISTRY/$DOCKER_IMAGE:$CI_COMMIT_SHA
     - echo "docker image push complete"
   dependencies:
-    - build:go
+    - test:go
 
 deploy:test:
   stage: deploy
