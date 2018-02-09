@@ -21,7 +21,7 @@ before_script:
 
 build:go:
   stage: build
-  image: golang:1.9.3-stretch
+  image: golang:1.9.4
   script:
     - echo "preparing go env"
     - mkdir -p $GOPATH/src/github.com/thomasdarimont/gotraining
