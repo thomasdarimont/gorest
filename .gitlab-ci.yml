@@ -16,20 +16,15 @@ stages:
   - package
   - deploy
 
-# see https://stackoverflow.com/questions/45537023/gitlab-ci-cache-keep-golang-packages-between-stages
-after_script:
-  - 'cp -R $GOPATH ./_GO || :'
-
 before_script:
 # see available variables: https://docs.gitlab.com/ce/ci/variables/README.html
   - 'echo -e "CI_BUILD_REF: $CI_BUILD_REF\nCI_PROJECT_DIR: $CI_PROJECT_DIR\nCI_PROJECT_NAMESPACE: $CI_PROJECT_NAMESPACE\nCI_PROJECT_NAME: $CI_PROJECT_NAME\nCI_PIPELINE_ID: $CI_PIPELINE_ID\n"'
-  - 'cp -R _GO $GOPATH'
 
 cache:
   untracked: true
   key: "$CI_BUILD_REF_NAME"
   paths:
-    - _GO/
+    - $GOPATH
 
 build:go:
   stage: build
