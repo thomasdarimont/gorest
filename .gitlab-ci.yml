@@ -37,6 +37,9 @@ build:go:
     - echo "bulding $CI_PROJECT_NAME..."
     - echo $(cat VERSION).$CI_PIPELINE_ID > VERSION
     - ./build.sh
+    - echo "running tests..."
+    - go test ./...
+    - echo "tests completed."
   artifacts:
     paths:
       - out/*

@@ -14,6 +14,6 @@ type Info struct {
 	Version string  `json: version`
 }
 
-func InfoEndpoint(w http.ResponseWriter, req *http.Request) {
+func InfoEndpoint(w http.ResponseWriter, _ *http.Request) {
 	json.NewEncoder(w).Encode(&Info{CommitSha: GitCommit, BuildDate: BuildDate, Version: Version})
 }
