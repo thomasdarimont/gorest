@@ -2,10 +2,10 @@ image: docker:18.01.0-ce-git
 
 variables:
   DOCKER_DRIVER: overlay
-  INTERNAL_DOCKER_REGISTRY: "gitlab:5000"
-  IMAGE_NAME: "gorest"
-  CONTAINER_NAME: "gorest"
-  REPO_NAME: tdlabs/gorest
+  REGISTRY: "gitlab:5000"
+  IMAGE: "gorest"
+  CONTAINER: "gorest"
+  DEPLOY_USER: vagrant
 
 services:
   - docker:dind
