@@ -63,14 +63,14 @@ package:docker:
 deploy:test:
   stage: deploy
   image: phusion/baseimage:0.10.0
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "$SSH_PRIVATE_KEY")
-    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
-    - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
+#  before_script:
+#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+#    - eval $(ssh-agent -s)
+#    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+#    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
+#    - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
   script:
-    - ENV=test DEPLOY_HOST=test TAG=$CI_COMMIT_SHA ./deploy.sh
+    - ENV=test DEPLOY_HOST=test TAG=$CI_COMMIT_SHA ./deploy.sh initssh
   environment:
     name: test
     url: http://test:8090/
@@ -82,14 +82,14 @@ deploy:test:
 deploy:prod:
   stage: deploy
   image: phusion/baseimage:0.10.0
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "$SSH_PRIVATE_KEY")
-    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
-    - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
+#  before_script:
+#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+#    - eval $(ssh-agent -s)
+#    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+#    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
+#    - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
   script:
-    - ENV=prod DEPLOY_HOST=prod TAG=$CI_COMMIT_SHA ./deploy.sh
+    - ENV=prod DEPLOY_HOST=prod TAG=$CI_COMMIT_SHA ./deploy.sh initssh
   environment:
     name: prod
     url: http://prod:8090/
