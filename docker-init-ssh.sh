@@ -1,4 +1,4 @@
-#!/usr/bin/env /bin/bash
+#!/bin/bash
 
 if ! grep docker /proc/1/cgroup -qa; then
     echo "Can only be executed within a docker environment"
