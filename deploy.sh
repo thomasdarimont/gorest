@@ -8,7 +8,7 @@
 : "${DEPLOY_USER:=vagrant}"
 : "${DEPLOY_HOST:=test}"
 
-./docker-init-ssh.sh
+source docker-init-ssh.sh
 
 echo "Deploy to $ENV environment"
 
