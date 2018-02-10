@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env /bin/bash
 
 : "${IMAGE:=gorest}"
 : "${REGISTRY:=gitlab:5000}"

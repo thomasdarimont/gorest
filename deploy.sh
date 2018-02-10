@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env /bin/bash
 
 : "${ENV:=test}"
 : "${CONTAINER:=gorest}"
