@@ -66,7 +66,8 @@ deploy:test:
 #  before_script:
 #    - SSH_PRIVATE_KEY="$SSH_PRIVATE_KEY" SSH_SERVER_HOSTKEYS="$SSH_SERVER_HOSTKEYS" ./docker-init-ssh.sh
   script:
-    - ENV=test DEPLOY_HOST=test TAG=$CI_COMMIT_SHA SSH_PRIVATE_KEY="$SSH_PRIVATE_KEY" SSH_SERVER_HOSTKEYS="$SSH_SERVER_HOSTKEYS" ./deploy.sh
+    - SSH_PRIVATE_KEY="$SSH_PRIVATE_KEY" SSH_SERVER_HOSTKEYS="$SSH_SERVER_HOSTKEYS" ./docker-init-ssh.sh
+    - ENV=test DEPLOY_HOST=test TAG=$CI_COMMIT_SHA ./deploy.sh
   environment:
     name: test
     url: http://test:8090/

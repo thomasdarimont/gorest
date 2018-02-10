@@ -8,8 +8,6 @@
 : "${DEPLOY_USER:=vagrant}"
 : "${DEPLOY_HOST:=test}"
 
-source docker-init-ssh.sh
-
 echo "Deploy to $ENV environment"
 
 ssh $DEPLOY_USER@$DEPLOY_HOST "docker stop $CONTAINER || true"
