@@ -56,7 +56,7 @@ build:go:
 package:docker:
   stage: package
   script:
-    - TAG=$CI_COMMIT_SHA ./build-docker.sh
+    - TAG=$CI_COMMIT_SHA ./build-docker.sh push
   dependencies:
     - build:go
 
