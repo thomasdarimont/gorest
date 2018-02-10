@@ -3,7 +3,7 @@ image: docker:18.01.0-ce-git
 variables:
   DOCKER_DRIVER: overlay
   INTERNAL_DOCKER_REGISTRY: "gitlab:5000"
-  DOCKER_IMAGE: "gorest"
+  IMAGE_NAME: "gorest"
   CONTAINER_NAME: "gorest"
   REPO_NAME: tdlabs/gorest
 
@@ -36,10 +36,7 @@ build:go:
     - cd $GOPATH/src/github.com/thomasdarimont/gotraining/$CI_PROJECT_NAME
     - echo "bulding $CI_PROJECT_NAME..."
     - echo $(cat VERSION).$CI_PIPELINE_ID > VERSION
-    - ./build.sh
-    - echo "running tests..."
-    - go test ./...
-    - echo "tests completed."
+    - ./build.sh test
   artifacts:
     paths:
       - out/*
@@ -59,12 +56,7 @@ build:go:
 package:docker:
   stage: package
   script:
-    - echo "docker build..."
-    - docker build -t $INTERNAL_DOCKER_REGISTRY/$DOCKER_IMAGE:$CI_COMMIT_SHA .
-    - echo "docker build complete"
-    - echo "docker push..."
-    - docker push $INTERNAL_DOCKER_REGISTRY/$DOCKER_IMAGE:$CI_COMMIT_SHA
-    - echo "docker image push complete"
+    - TAG=$CI_COMMIT_SHA ./build-docker.sh
   dependencies:
     - build:go
 
@@ -78,10 +70,7 @@ deploy:test:
     - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
     - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
   script:
-    - echo "Deploy to TEST environment"
-    - ssh vagrant@test "docker stop $CONTAINER_NAME || true"
-    - ssh vagrant@test "docker rm $CONTAINER_NAME || true"
-    - ssh vagrant@test docker run -d --rm --name $CONTAINER_NAME -p 8090:8080 $INTERNAL_DOCKER_REGISTRY/$CONTAINER_NAME:$CI_COMMIT_SHA
+    - ENV=test DEPLOY_HOST=test TAG=$CI_COMMIT_SHA ./deploy.sh
   environment:
     name: test
     url: http://test:8090/
@@ -100,10 +89,7 @@ deploy:prod:
     - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
     - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
   script:
-    - echo "Deploy to PROD environment"
-    - ssh vagrant@prod "docker stop $CONTAINER_NAME || true"
-    - ssh vagrant@prod "docker rm $CONTAINER_NAME || true"
-    - ssh vagrant@prod docker run -d --rm --name $CONTAINER_NAME -p 8090:8080 $INTERNAL_DOCKER_REGISTRY/$CONTAINER_NAME:$CI_COMMIT_SHA
+    - ENV=prod DEPLOY_HOST=prod TAG=$CI_COMMIT_SHA ./deploy.sh
   environment:
     name: prod
     url: http://prod:8090/

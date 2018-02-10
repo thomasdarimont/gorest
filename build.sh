@@ -12,5 +12,12 @@ export CGO_ENABLED=0
 export GOOS=linux
 
 go build -ldflags="$(govvv -flags -pkg $(go list ./actuator))" -o out/app
-
 echo "done."
+
+if [ ! "$1" = "test" ]; then
+  exit 0
+fi
+
+echo "running tests..."
+go test ./...
+echo "tests completed."
