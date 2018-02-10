@@ -30,13 +30,7 @@ build:go:
   stage: build
   image: golang:1.9.4
   script:
-    - echo "preparing go env"
-    - mkdir -p $GOPATH/src/github.com/thomasdarimont/gotraining
-    - ln -sf $CI_PROJECT_DIR $GOPATH/src/github.com/thomasdarimont/gotraining
-    - cd $GOPATH/src/github.com/thomasdarimont/gotraining/$CI_PROJECT_NAME
-    - echo "bulding $CI_PROJECT_NAME..."
-    - echo $(cat VERSION).$CI_PIPELINE_ID > VERSION
-    - ./build.sh test
+    - ./build-ci.sh
   artifacts:
     paths:
       - out/*
@@ -63,12 +57,6 @@ package:docker:
 deploy:test:
   stage: deploy
   image: phusion/baseimage:0.10.0
-#  before_script:
-#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-#    - eval $(ssh-agent -s)
-#    - ssh-add <(echo "$SSH_PRIVATE_KEY")
-#    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
-#    - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
   script:
     - ENV=test DEPLOY_HOST=test TAG=$CI_COMMIT_SHA ./deploy.sh initssh
   environment:
@@ -82,12 +70,6 @@ deploy:test:
 deploy:prod:
   stage: deploy
   image: phusion/baseimage:0.10.0
-#  before_script:
-#    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-#    - eval $(ssh-agent -s)
-#    - ssh-add <(echo "$SSH_PRIVATE_KEY")
-#    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
-#    - '[[ -f /.dockerenv ]] && echo "$SSH_SERVER_HOSTKEYS" > ~/.ssh/known_hosts'
   script:
     - ENV=prod DEPLOY_HOST=prod TAG=$CI_COMMIT_SHA ./deploy.sh initssh
   environment:
