@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 echo "fetching tools..."
 go get github.com/golang/dep/cmd/dep
