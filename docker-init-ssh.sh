@@ -6,6 +6,8 @@ if ! grep docker /proc/1/cgroup -qa; then
 fi
 
 echo "init ssh"
+echo SSH_PRIVATE_KEY=$SSH_PRIVATE_KEY
+echo SSH_SERVER_HOSTKEYS=$SSH_SERVER_HOSTKEYS
 
 which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
 eval $(ssh-agent -s)
