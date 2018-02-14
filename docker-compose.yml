@@ -4,7 +4,11 @@ services:
     # replace username/repo:tag with your name and image details
     image: gitlab:5000/gorest:latest
     deploy:
-      replicas: 2
+      mode: replicated
+      replicas: 3
+      placement:
+        constraints:
+        - node.labels.server_type==web
       resources:
         limits:
           cpus: "0.1"
